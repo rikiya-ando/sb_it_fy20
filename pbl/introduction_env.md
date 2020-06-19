@@ -1,6 +1,6 @@
-# Azure Kubernetes Service 研修環境の構築
+# PBL 研修環境の構築
 
-このドキュメントでは新人研修用の Azure Kubernetes Service 研修環境の構築手順について説明します。
+このドキュメントでは PBL 用の研修環境の構築手順について説明します。
 
 ## リソースプロバイダの確認
 
@@ -36,7 +36,7 @@ ACR のレジストリ名は Azure 内でユニークである必要がありま
 ACR 名は英数字としてください。nameAvailable が true であれば利用可能です。
 
 ```
-$ az acr check-name -n sbitshigeruregistory
+$ az acr check-name -n team0registory
 {
   "message": null,
   "nameAvailable": true,
@@ -51,13 +51,14 @@ ACR を作る前にリソースグループを作成する必要があります�
 
 ```
 $ az group create \
-           --resource-group acr-resource-group \
-           --location japaneast
+            --resource-group acr-team0-resource-group \
+            --location japaneast
+
 {
-  "id": "/subscriptions/24c48ca2-acd0-4711-bdd9-abc8f5870e47/resourceGroups/acr-resource-group",
+  "id": "/subscriptions/1898747d-2160-4abf-ad79-70c094b0ccd1/resourceGroups/acr-team0-resource-group",
   "location": "japaneast",
   "managedBy": null,
-  "name": "acr-resource-group",
+  "name": "acr-team0-resource-group",
   "properties": {
     "provisioningState": "Succeeded"
   },
@@ -72,24 +73,24 @@ $ az group create \
 
 ```
 $ az acr create \
-         --name sbitshigeruregistory \
-         --resource-group acr-resource-group \
-         --sku Standard \
-         --location japaneast
+           --name team0registory \
+           --resource-group acr-team0-resource-group \
+           --sku Standard \
+           --location japaneast
 {- Finished ..
   "adminUserEnabled": false,
-  "creationDate": "2020-06-15T08:43:32.818045+00:00",
+  "creationDate": "2020-06-19T12:22:58.858858+00:00",
   "dataEndpointEnabled": false,
   "dataEndpointHostNames": [],
   "encryption": {
     "keyVaultProperties": null,
     "status": "disabled"
   },
-  "id": "/subscriptions/24c48ca2-acd0-4711-bdd9-abc8f5870e47/resourceGroups/acr-resource-group/providers/Microsoft.ContainerRegistry/registries/sbitshigeruregistory",
+  "id": "/subscriptions/1898747d-2160-4abf-ad79-70c094b0ccd1/resourceGroups/acr-team0-resource-group/providers/Microsoft.ContainerRegistry/registries/team0registory",
   "identity": null,
   "location": "japaneast",
-  "loginServer": "sbitshigeruregistory.azurecr.io",
-  "name": "sbitshigeruregistory",
+  "loginServer": "team0registory.azurecr.io",
+  "name": "team0registory",
   "networkRuleSet": null,
   "policies": {
     "quarantinePolicy": {
@@ -97,7 +98,7 @@ $ az acr create \
     },
     "retentionPolicy": {
       "days": 7,
-      "lastUpdatedTime": "2020-06-15T08:43:35.007218+00:00",
+      "lastUpdatedTime": "2020-06-19T12:23:00.792764+00:00",
       "status": "disabled"
     },
     "trustPolicy": {
@@ -108,7 +109,7 @@ $ az acr create \
   "privateEndpointConnections": [],
   "provisioningState": "Succeeded",
   "publicNetworkAccess": "Enabled",
-  "resourceGroup": "acr-resource-group",
+  "resourceGroup": "acr-team0-resource-group",
   "sku": {
     "name": "Standard",
     "tier": "Standard"
@@ -128,13 +129,13 @@ AKS を作る場合も、リソースグループを作成する必要があり�
 
 ```
 $ az group create \
-           --name aks-resource-group \
-           --location japaneast
+            --name aks-team0-resource-group \
+            --location japaneast
 {
-  "id": "/subscriptions/24c48ca2-acd0-4711-bdd9-abc8f5870e47/resourceGroups/aks-resource-group",
+  "id": "/subscriptions/1898747d-2160-4abf-ad79-70c094b0ccd1/resourceGroups/aks-team0-resource-group",
   "location": "japaneast",
   "managedBy": null,
-  "name": "aks-resource-group",
+  "name": "aks-team0-resource-group",
   "properties": {
     "provisioningState": "Succeeded"
   },
@@ -149,15 +150,15 @@ AKS が使用する Virtual Network を作成します。以下のコマンド�
 
 ```
 $ az network vnet create \
-             --name aks-vnet \
-             --resource-group aks-resource-group \
-             --location japaneast \
-             --address-prefixes 10.1.0.0/16
+               --name aks-team0-vnet \
+               --resource-group aks-team0-resource-group \
+               --location japaneast \
+               --address-prefixes 10.1.0.0/22
 {
   "newVNet": {
     "addressSpace": {
       "addressPrefixes": [
-        "10.1.0.0/16"
+        "10.1.0.0/22"
       ]
     },
     "bgpCommunities": null,
@@ -167,14 +168,14 @@ $ az network vnet create \
     },
     "enableDdosProtection": false,
     "enableVmProtection": false,
-    "etag": "W/\"8287498e-3fb4-43f2-906b-312e721d9780\"",
-    "id": "/subscriptions/24c48ca2-acd0-4711-bdd9-abc8f5870e47/resourceGroups/aks-resource-group/providers/Microsoft.Network/virtualNetworks/aks-vnet",
+    "etag": "W/\"6bc11b4d-7be5-4bae-b454-51013874a25c\"",
+    "id": "/subscriptions/1898747d-2160-4abf-ad79-70c094b0ccd1/resourceGroups/aks-team0-resource-group/providers/Microsoft.Network/virtualNetworks/aks-team0-vnet",
     "ipAllocations": null,
     "location": "japaneast",
-    "name": "aks-vnet",
+    "name": "aks-team0-vnet",
     "provisioningState": "Succeeded",
-    "resourceGroup": "aks-resource-group",
-    "resourceGuid": "8d83f82a-2079-48c4-a073-f1ba81eff62e",
+    "resourceGroup": "aks-team0-resource-group",
+    "resourceGuid": "1b283765-ad5a-4d1a-9adc-e5b1b8331763",
     "subnets": [],
     "tags": {},
     "type": "Microsoft.Network/virtualNetworks",
@@ -190,11 +191,11 @@ $ az network vnet create \
 ```
 $ az ad sp create-for-rbac --skip-assignment
 {
-  "appId": "2d79a51c-3e7d-4902-a0f6-57fb91cdfda2",
-  "displayName": "azure-cli-2020-06-15-11-55-18",
-  "name": "http://azure-cli-2020-06-15-11-55-18",
-  "password": "oCiB1lXEBHOa7dByQM01B1L.t39ap8BNm_",
-  "tenant": "0ee138b5-7f4e-41d1-8c20-7ffcb1d1c497"
+  "appId": "ee959396-b78d-4f7e-8b38-0cfe2561bc2b",
+  "displayName": "azure-cli-2020-06-19-12-26-45",
+  "name": "http://azure-cli-2020-06-19-12-26-45",
+  "password": "V6W5-7Zko6rI367Z5Qi0gkafuRm6Nb4V_5",
+  "tenant": "bfc99600-59e2-4cc1-981b-361c2f802cf2"
 }
 ```
 
@@ -203,35 +204,35 @@ password は AKS クラスタ作成時の --client-secret に指定するので�
 
 ### VNet ID の確認
 
-以下のコマンドを実行し、aks-vnet の VNet ID を確認します。
+以下のコマンドを実行し、aks-team0-vnet の VNet ID を確認します。
 
 ```
 $ az network vnet show \
-             --resource-group aks-resource-group \
-             --name aks-vnet \
-             --query id -o tsv
-/subscriptions/24c48ca2-acd0-4711-bdd9-abc8f5870e47/resourceGroups/aks-resource-group/providers/Microsoft.Network/virtualNetworks/aks-vnet
+               --resource-group aks-team0-resource-group \
+               --name aks-team0-vnet \
+               --query id -o tsv
+/subscriptions/1898747d-2160-4abf-ad79-70c094b0ccd1/resourceGroups/aks-team0-resource-group/providers/Microsoft.Network/virtualNetworks/aks-team0-vnet
 ```
 
 ### ロールのアサイン
 
 以下のコマンドでロールのアサインを実行します。
---assignee に、サービスプリンシパル作成時の appId、--scope に、aks-vnet の VNet ID を指定することに注意してください。
+--assignee に、サービスプリンシパル作成時の appId、--scope に、aks-team0-vnet の VNet ID を指定することに注意してください。
 
 ```
 $ az role assignment create \
-          --assignee 2d79a51c-3e7d-4902-a0f6-57fb91cdfda2 \
-          --scope /subscriptions/24c48ca2-acd0-4711-bdd9-abc8f5870e47/resourceGroups/aks-resource-group/providers/Microsoft.Network/virtualNetworks/aks-vnet \
-          --role Contributor
+            --assignee ee959396-b78d-4f7e-8b38-0cfe2561bc2b \
+            --scope /subscriptions/1898747d-2160-4abf-ad79-70c094b0ccd1/resourceGroups/aks-team0-resource-group/providers/Microsoft.Network/virtualNetworks/aks-team0-vnet \
+            --role Contributor
 {
   "canDelegate": null,
-  "id": "/subscriptions/24c48ca2-acd0-4711-bdd9-abc8f5870e47/resourceGroups/aks-resource-group/providers/Microsoft.Network/virtualNetworks/aks-vnet/providers/Microsoft.Authorization/roleAssignments/f9e85969-007b-400f-8156-13b7a54cabd1",
-  "name": "f9e85969-007b-400f-8156-13b7a54cabd1",
-  "principalId": "6a4d66e2-a977-4758-a00d-1c8a149b5de2",
+  "id": "/subscriptions/1898747d-2160-4abf-ad79-70c094b0ccd1/resourceGroups/aks-team0-resource-group/providers/Microsoft.Network/virtualNetworks/aks-team0-vnet/providers/Microsoft.Authorization/roleAssignments/82615108-e830-443d-9e8c-fc3b8ed4957d",
+  "name": "82615108-e830-443d-9e8c-fc3b8ed4957d",
+  "principalId": "3a263f38-b567-48a7-ba2a-295c47a5ff32",
   "principalType": "ServicePrincipal",
-  "resourceGroup": "aks-resource-group",
-  "roleDefinitionId": "/subscriptions/24c48ca2-acd0-4711-bdd9-abc8f5870e47/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c",
-  "scope": "/subscriptions/24c48ca2-acd0-4711-bdd9-abc8f5870e47/resourceGroups/aks-resource-group/providers/Microsoft.Network/virtualNetworks/aks-vnet",
+  "resourceGroup": "aks-team0-resource-group",
+  "roleDefinitionId": "/subscriptions/1898747d-2160-4abf-ad79-70c094b0ccd1/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c",
+  "scope": "/subscriptions/1898747d-2160-4abf-ad79-70c094b0ccd1/resourceGroups/aks-team0-resource-group/providers/Microsoft.Network/virtualNetworks/aks-team0-vnet",
   "type": "Microsoft.Authorization/roleAssignments"
 }
 ```
@@ -265,20 +266,20 @@ KubernetesVersion    Upgrades
 
 ```
 $ az network vnet subnet create \
-             --name aks-subnet \
-             --resource-group aks-resource-group \
-             --vnet-name aks-vnet \
-             --address-prefix 10.1.0.0/24
+                 --name aks-team0-subnet \
+                 --resource-group aks-team0-resource-group \
+                 --vnet-name aks-team0-vnet \
+                 --address-prefix 10.1.1.0/24
 {
-  "addressPrefix": "10.1.0.0/24",
+  "addressPrefix": "10.1.1.0/24",
   "addressPrefixes": null,
   "delegations": [],
-  "etag": "W/\"75398623-cbeb-4e41-a188-9bffd2b55349\"",
-  "id": "/subscriptions/24c48ca2-acd0-4711-bdd9-abc8f5870e47/resourceGroups/aks-resource-group/providers/Microsoft.Network/virtualNetworks/aks-vnet/subnets/aks-subnet",
+  "etag": "W/\"0857968e-3160-4c9f-bcc0-0d3a08b85e26\"",
+  "id": "/subscriptions/1898747d-2160-4abf-ad79-70c094b0ccd1/resourceGroups/aks-team0-resource-group/providers/Microsoft.Network/virtualNetworks/aks-team0-vnet/subnets/aks-team0-subnet",
   "ipAllocations": null,
   "ipConfigurationProfiles": null,
   "ipConfigurations": null,
-  "name": "aks-subnet",
+  "name": "aks-team0-subnet",
   "natGateway": null,
   "networkSecurityGroup": null,
   "privateEndpointNetworkPolicies": "Enabled",
@@ -286,7 +287,7 @@ $ az network vnet subnet create \
   "privateLinkServiceNetworkPolicies": "Enabled",
   "provisioningState": "Succeeded",
   "purpose": null,
-  "resourceGroup": "aks-resource-group",
+  "resourceGroup": "aks-team0-resource-group",
   "resourceNavigationLinks": null,
   "routeTable": null,
   "serviceAssociationLinks": null,
@@ -325,20 +326,20 @@ MaxDataDiskCount    MemoryInMb    Name                    NumberOfCores    OsDis
 
 ```
 $ az aks create \
-         --name aks-cluster \
-         --resource-group aks-resource-group \
-         --location japaneast \
-         --vnet-subnet-id "/subscriptions/24c48ca2-acd0-4711-bdd9-abc8f5870e47/resourceGroups/aks-resource-group/providers/Microsoft.Network/virtualNetworks/aks-vnet/subnets/aks-subnet" \
-         --generate-ssh-keys \
-         --network-plugin "azure" \
-         --kubernetes-version 1.16.9 \
-         --node-count 3 \
-         --node-vm-size Standard_B2s \
-         --max-pods 50 \
-         --dns-name-prefix aks-cluster \
-         --enable-addons monitoring,http_application_routing \
-         --service-principal "2d79a51c-3e7d-4902-a0f6-57fb91cdfda2" \
-         --client-secret "oCiB1lXEBHOa7dByQM01B1L.t39ap8BNm_"
+           --name aks-team0-cluster \
+           --resource-group aks-team0-resource-group \
+           --location japaneast \
+           --vnet-subnet-id "/subscriptions/1898747d-2160-4abf-ad79-70c094b0ccd1/resourceGroups/aks-team0-resource-group/providers/Microsoft.Network/virtualNetworks/aks-team0-vnet/subnets/aks-team0-subnet" \
+           --generate-ssh-keys \
+           --network-plugin "azure" \
+           --kubernetes-version 1.16.9 \
+           --node-count 3 \
+           --node-vm-size Standard_B2ms \
+           --max-pods 50 \
+           --dns-name-prefix aks-team0-cluster \
+           --enable-addons monitoring,http_application_routing \
+           --service-principal "ee959396-b78d-4f7e-8b38-0cfe2561bc2b" \
+           --client-secret "V6W5-7Zko6rI367Z5Qi0gkafuRm6Nb4V_5"
 AAD role propagation done[############################################]  100.0000%{
   "aadProfile": null,
   "addonProfiles": {
@@ -349,14 +350,14 @@ AAD role propagation done[############################################]  100.000
     },
     "httpApplicationRouting": {
       "config": {
-        "HTTPApplicationRoutingZoneName": "a75cdd3368a347a89b22.japaneast.aksapp.io"
+        "HTTPApplicationRoutingZoneName": "4cf17a37e77b4923a381.japaneast.aksapp.io"
       },
       "enabled": true,
       "identity": null
     },
     "omsagent": {
       "config": {
-        "logAnalyticsWorkspaceResourceID": "/subscriptions/24c48ca2-acd0-4711-bdd9-abc8f5870e47/resourcegroups/defaultresourcegroup-ejp/providers/microsoft.operationalinsights/workspaces/defaultworkspace-24c48ca2-acd0-4711-bdd9-abc8f5870e47-ejp"
+        "logAnalyticsWorkspaceResourceID": "/subscriptions/1898747d-2160-4abf-ad79-70c094b0ccd1/resourcegroups/defaultresourcegroup-ejp/providers/microsoft.operationalinsights/workspaces/defaultworkspace-1898747d-2160-4abf-ad79-70c094b0ccd1-ejp"
       },
       "enabled": true,
       "identity": null
@@ -384,18 +385,18 @@ AAD role propagation done[############################################]  100.000
       "spotMaxPrice": null,
       "tags": null,
       "type": "VirtualMachineScaleSets",
-      "vmSize": "Standard_B2s",
-      "vnetSubnetId": "/subscriptions/24c48ca2-acd0-4711-bdd9-abc8f5870e47/resourceGroups/aks-resource-group/providers/Microsoft.Network/virtualNetworks/aks-vnet/subnets/aks-subnet"
+      "vmSize": "Standard_B2ms",
+      "vnetSubnetId": "/subscriptions/1898747d-2160-4abf-ad79-70c094b0ccd1/resourceGroups/aks-team0-resource-group/providers/Microsoft.Network/virtualNetworks/aks-team0-vnet/subnets/aks-team0-subnet"
     }
   ],
   "apiServerAccessProfile": null,
   "autoScalerProfile": null,
   "diskEncryptionSetId": null,
-  "dnsPrefix": "aks-cluster",
+  "dnsPrefix": "aks-team0-cluster",
   "enablePodSecurityPolicy": null,
   "enableRbac": true,
-  "fqdn": "aks-cluster-204dcbe6.hcp.japaneast.azmk8s.io",
-  "id": "/subscriptions/24c48ca2-acd0-4711-bdd9-abc8f5870e47/resourcegroups/aks-resource-group/providers/Microsoft.ContainerService/managedClusters/aks-cluster",
+  "fqdn": "aks-team0-cluster-13ee0fd5.hcp.japaneast.azmk8s.io",
+  "id": "/subscriptions/1898747d-2160-4abf-ad79-70c094b0ccd1/resourcegroups/aks-team0-resource-group/providers/Microsoft.ContainerService/managedClusters/aks-team0-cluster",
   "identity": null,
   "identityProfile": null,
   "kubernetesVersion": "1.16.9",
@@ -411,7 +412,7 @@ AAD role propagation done[############################################]  100.000
   },
   "location": "japaneast",
   "maxAgentPools": 10,
-  "name": "aks-cluster",
+  "name": "aks-team0-cluster",
   "networkProfile": {
     "dnsServiceIp": "10.0.0.10",
     "dockerBridgeCidr": "172.17.0.1/16",
@@ -419,8 +420,8 @@ AAD role propagation done[############################################]  100.000
       "allocatedOutboundPorts": null,
       "effectiveOutboundIps": [
         {
-          "id": "/subscriptions/24c48ca2-acd0-4711-bdd9-abc8f5870e47/resourceGroups/MC_aks-resource-group_aks-cluster_japaneast/providers/Microsoft.Network/publicIPAddresses/0805f526-ba63-4073-8115-90540c185ad1",
-          "resourceGroup": "MC_aks-resource-group_aks-cluster_japaneast"
+          "id": "/subscriptions/1898747d-2160-4abf-ad79-70c094b0ccd1/resourceGroups/MC_aks-team0-resource-group_aks-team0-cluster_japaneast/providers/Microsoft.Network/publicIPAddresses/f9de5edc-7b45-4741-a47e-4302718d5276",
+          "resourceGroup": "MC_aks-team0-resource-group_aks-team0-cluster_japaneast"
         }
       ],
       "idleTimeoutInMinutes": null,
@@ -438,12 +439,12 @@ AAD role propagation done[############################################]  100.000
     "podCidr": null,
     "serviceCidr": "10.0.0.0/16"
   },
-  "nodeResourceGroup": "MC_aks-resource-group_aks-cluster_japaneast",
+  "nodeResourceGroup": "MC_aks-team0-resource-group_aks-team0-cluster_japaneast",
   "privateFqdn": null,
   "provisioningState": "Succeeded",
-  "resourceGroup": "aks-resource-group",
+  "resourceGroup": "aks-team0-resource-group",
   "servicePrincipalProfile": {
-    "clientId": "2d79a51c-3e7d-4902-a0f6-57fb91cdfda2",
+    "clientId": "ee959396-b78d-4f7e-8b38-0cfe2561bc2b",
     "secret": null
   },
   "sku": {
@@ -459,7 +460,7 @@ AAD role propagation done[############################################]  100.000
 }
 ```
 
-AKS クラスタの作成には、30 分程度時間がかかります。
+AKS クラスタの作成には、10 - 30 分程度時間がかかります。
 
 ### kubectl 用のクラスタの認証情報の取得
 
@@ -467,9 +468,8 @@ AKS クラスタの作成には、30 分程度時間がかかります。
 
 ```
 $ az aks get-credentials \
-         --name aks-cluster  \
-         --resource-group aks-resource-group
-Merged "aks-cluster" as current context in /Users/tatsutas40/.kube/config
+         --name aks-team0-cluster \
+         --resource-group aks-team0-resource-group
 ```
 
 以下のコマンドを実行し、クラスタを構成するノードが表示されば、構築は完了です。
@@ -477,9 +477,9 @@ Merged "aks-cluster" as current context in /Users/tatsutas40/.kube/config
 ```
 $ kubectl get node
 NAME                                STATUS   ROLES   AGE     VERSION
-aks-nodepool1-11466683-vmss000000   Ready    agent   5m49s   v1.16.9
-aks-nodepool1-11466683-vmss000001   Ready    agent   6m1s    v1.16.9
-aks-nodepool1-11466683-vmss000002   Ready    agent   5m57s   v1.16.9
+aks-nodepool1-13017820-vmss000000   Ready    agent   5m17s   v1.16.9
+aks-nodepool1-13017820-vmss000001   Ready    agent   5m12s   v1.16.9
+aks-nodepool1-13017820-vmss000002   Ready    agent   5m5s    v1.16.9
 ```
 
 ### ACR のアクセスキーの有効化
@@ -512,9 +512,9 @@ Azure Portal にログインし、画面上の検索バーで「コンテナ」�
 
 ```
 $ kubectl create secret docker-registry docker-reg-credential \
-          --docker-server=sbitshigeruregistory.azurecr.io \
-          --docker-username=sbitshigeruregistory \
-          --docker-password="GP8/EWXMwfku2mcw/w0KyPl1DbknQ89u" \
+          --docker-server=team0registory.azurecr.io \
+          --docker-username=team0registory \
+          --docker-password="EkIl+iGZXqtxkO0HBiejYWLA/EusIuRU" \
           --docker-email=shigeru.sb.it@gmail.com
 
 secret/docker-reg-credential created
@@ -528,3 +528,115 @@ NAME                    TYPE                                  DATA   AGE
 default-token-mvnns     kubernetes.io/service-account-token   3      19m
 docker-reg-credential   kubernetes.io/dockerconfigjson        1      10m
 ```
+
+## Azure Cache for Redis の作成
+
+### Azure Cache for Redis の作成
+
+```
+$ az redis create \
+      --name team0-redis \
+      --resource-group aks-team0-resource-group \
+      --location japaneast \
+      --sku Standard \
+      --vm-size c1
+      --enable-non-ssl-port
+```
+
+
+## Azure SQL Database の作成
+
+```
+$ az sql server create \
+      --name team0-sqlsrv \
+      --resource-group aks-team0-resource-group \
+      --location japaneast \
+      --admin-user ServerAdmin \
+      --admin-password welcome1#
+{- Finished ..
+  "administratorLogin": "ServerAdmin",
+  "administratorLoginPassword": null,
+  "fullyQualifiedDomainName": "team0-sqlsrv.database.windows.net",
+  "id": "/subscriptions/1898747d-2160-4abf-ad79-70c094b0ccd1/resourceGroups/aks-team0-resource-group/providers/Microsoft.Sql/servers/team0-sqlsrv",
+  "identity": null,
+  "kind": "v12.0",
+  "location": "japaneast",
+  "minimalTlsVersion": null,
+  "name": "team0-sqlsrv",
+  "privateEndpointConnections": [],
+  "publicNetworkAccess": "Enabled",
+  "resourceGroup": "aks-team0-resource-group",
+  "state": "Ready",
+  "tags": null,
+  "type": "Microsoft.Sql/servers",
+  "version": "12.0"
+}
+```
+
+
+```
+$ az sql db create \
+      --resource-group aks-team0-resource-group \
+      --server team0-sqlsrv \
+      --name team0db \
+      --service-objective S2 \
+      --collation Japanese_XJIS_100_CI_AS
+{- Finished ..
+  "autoPauseDelay": null,
+  "catalogCollation": "SQL_Latin1_General_CP1_CI_AS",
+  "collation": "Japanese_XJIS_100_CI_AS",
+  "createMode": null,
+  "creationDate": "2020-06-19T13:12:03.380000+00:00",
+  "currentServiceObjectiveName": "S2",
+  "currentSku": {
+    "capacity": 50,
+    "family": null,
+    "name": "Standard",
+    "size": null,
+    "tier": "Standard"
+  },
+  "databaseId": "de556349-f3c6-4753-a08f-ff939cf06142",
+  "defaultSecondaryLocation": "japanwest",
+  "earliestRestoreDate": "2020-06-19T13:42:03.380000+00:00",
+  "edition": "Standard",
+  "elasticPoolId": null,
+  "elasticPoolName": null,
+  "failoverGroupId": null,
+  "id": "/subscriptions/1898747d-2160-4abf-ad79-70c094b0ccd1/resourceGroups/aks-team0-resource-group/providers/Microsoft.Sql/servers/team0-sqlsrv/databases/team0db",
+  "kind": "v12.0,user",
+  "licenseType": null,
+  "location": "japaneast",
+  "longTermRetentionBackupResourceId": null,
+  "managedBy": null,
+  "maxLogSizeBytes": null,
+  "maxSizeBytes": 268435456000,
+  "minCapacity": null,
+  "name": "team0db",
+  "pausedDate": null,
+  "readReplicaCount": 0,
+  "readScale": "Disabled",
+  "recoverableDatabaseId": null,
+  "recoveryServicesRecoveryPointId": null,
+  "requestedServiceObjectiveName": "S2",
+  "resourceGroup": "aks-team0-resource-group",
+  "restorableDroppedDatabaseId": null,
+  "restorePointInTime": null,
+  "resumedDate": null,
+  "sampleName": null,
+  "sku": {
+    "capacity": 50,
+    "family": null,
+    "name": "Standard",
+    "size": null,
+    "tier": "Standard"
+  },
+  "sourceDatabaseDeletionDate": null,
+  "sourceDatabaseId": null,
+  "status": "Online",
+  "tags": null,
+  "type": "Microsoft.Sql/servers/databases",
+  "zoneRedundant": false
+}
+```
+
+Firewall 画面からオンにして、サブネットで許可すればよい。
