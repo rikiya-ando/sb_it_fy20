@@ -539,7 +539,7 @@ $ az redis create \
       --resource-group aks-team0-resource-group \
       --location japaneast \
       --sku Standard \
-      --vm-size c1
+      --vm-size c1 \
       --enable-non-ssl-port
 ```
 
