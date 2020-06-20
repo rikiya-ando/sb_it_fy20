@@ -318,7 +318,124 @@ $ az aks create \
            --enable-addons monitoring,http_application_routing \
            --service-principal "42a2745a-eaf8-46e6-80bb-a2ee21f1b61c" \
            --client-secret "pJhMOrqYwNaPp30MypdA38DaVVAGjUQ__k"
-
+AAD role propagation done[############################################]  100.0000%{
+  "aadProfile": null,
+  "addonProfiles": {
+    "KubeDashboard": {
+      "config": null,
+      "enabled": true,
+      "identity": null
+    },
+    "httpApplicationRouting": {
+      "config": {
+        "HTTPApplicationRoutingZoneName": "80e08a12b6fa40b4bb55.japaneast.aksapp.io"
+      },
+      "enabled": true,
+      "identity": null
+    },
+    "omsagent": {
+      "config": {
+        "logAnalyticsWorkspaceResourceID": "/subscriptions/1898747d-2160-4abf-ad79-70c094b0ccd1/resourcegroups/defaultresourcegroup-ejp/providers/microsoft.operationalinsights/workspaces/defaultworkspace-1898747d-2160-4abf-ad79-70c094b0ccd1-ejp"
+      },
+      "enabled": true,
+      "identity": null
+    }
+  },
+  "agentPoolProfiles": [
+    {
+      "availabilityZones": null,
+      "count": 3,
+      "enableAutoScaling": null,
+      "enableNodePublicIp": false,
+      "maxCount": null,
+      "maxPods": 50,
+      "minCount": null,
+      "mode": "System",
+      "name": "nodepool1",
+      "nodeLabels": {},
+      "nodeTaints": null,
+      "orchestratorVersion": "1.16.9",
+      "osDiskSizeGb": 128,
+      "osType": "Linux",
+      "provisioningState": "Succeeded",
+      "scaleSetEvictionPolicy": null,
+      "scaleSetPriority": null,
+      "spotMaxPrice": null,
+      "tags": null,
+      "type": "VirtualMachineScaleSets",
+      "vmSize": "Standard_B2ms",
+      "vnetSubnetId": "/subscriptions/1898747d-2160-4abf-ad79-70c094b0ccd1/resourceGroups/team0-resource-group/providers/Microsoft.Network/virtualNetworks/aks-team0-vnet/subnets/aks-team0-subnet"
+    }
+  ],
+  "apiServerAccessProfile": null,
+  "autoScalerProfile": null,
+  "diskEncryptionSetId": null,
+  "dnsPrefix": "aks-team0-cluster",
+  "enablePodSecurityPolicy": null,
+  "enableRbac": true,
+  "fqdn": "aks-team0-cluster-48a42a1a.hcp.japaneast.azmk8s.io",
+  "id": "/subscriptions/1898747d-2160-4abf-ad79-70c094b0ccd1/resourcegroups/team0-resource-group/providers/Microsoft.ContainerService/managedClusters/aks-team0-cluster",
+  "identity": null,
+  "identityProfile": null,
+  "kubernetesVersion": "1.16.9",
+  "linuxProfile": {
+    "adminUsername": "azureuser",
+    "ssh": {
+      "publicKeys": [
+        {
+          "keyData": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDCjyVsEkGPh3030VLucq9ijEwtL0MvPujN525Jcp4NYFyx4AAc8GPy7aXHWMYGwIhrVMcicrJEV7J4zbUUo7EgvMmbHdAnN2oif6/QzHG203rLKyArUHSHsRVgx/B3pepgR+Vw4zluM6mg4JXpmyfnIUiyMcOAEi8x8v31Cispssnl3bkAJKf7TNEPI7dIn4PeQX4PI3ksWUKpjWg0XEZyT10LoWptRHrDPuTuFzNaRRyZSr7r8Y3QlOYjmPrB7n9tSx8DJEY8tsONxOEr0c4f82tN4/azHPa2dNyE4cPS1HwIUYZP8dmehzxUwsFnmFMtVvfcKTRMfC8WrrAEFESX tatsutas40@COAMAC14100266.local\n"
+        }
+      ]
+    }
+  },
+  "location": "japaneast",
+  "maxAgentPools": 10,
+  "name": "aks-team0-cluster",
+  "networkProfile": {
+    "dnsServiceIp": "10.0.0.10",
+    "dockerBridgeCidr": "172.17.0.1/16",
+    "loadBalancerProfile": {
+      "allocatedOutboundPorts": null,
+      "effectiveOutboundIps": [
+        {
+          "id": "/subscriptions/1898747d-2160-4abf-ad79-70c094b0ccd1/resourceGroups/MC_team0-resource-group_aks-team0-cluster_japaneast/providers/Microsoft.Network/publicIPAddresses/5e380061-d876-438b-b9d3-cdc3420fd552",
+          "resourceGroup": "MC_team0-resource-group_aks-team0-cluster_japaneast"
+        }
+      ],
+      "idleTimeoutInMinutes": null,
+      "managedOutboundIps": {
+        "count": 1
+      },
+      "outboundIpPrefixes": null,
+      "outboundIps": null
+    },
+    "loadBalancerSku": "Standard",
+    "networkMode": null,
+    "networkPlugin": "azure",
+    "networkPolicy": null,
+    "outboundType": "loadBalancer",
+    "podCidr": null,
+    "serviceCidr": "10.0.0.0/16"
+  },
+  "nodeResourceGroup": "MC_team0-resource-group_aks-team0-cluster_japaneast",
+  "privateFqdn": null,
+  "provisioningState": "Succeeded",
+  "resourceGroup": "team0-resource-group",
+  "servicePrincipalProfile": {
+    "clientId": "42a2745a-eaf8-46e6-80bb-a2ee21f1b61c",
+    "secret": null
+  },
+  "sku": {
+    "name": "Basic",
+    "tier": "Free"
+  },
+  "tags": null,
+  "type": "Microsoft.ContainerService/ManagedClusters",
+  "windowsProfile": {
+    "adminPassword": null,
+    "adminUsername": "azureuser"
+  }
+}
 ```
 
 AKS クラスタの作成には、10 - 30 分程度時間がかかります。
@@ -375,7 +492,7 @@ Azure Portal にログインし、画面上の検索バーで「コンテナ」�
 $ kubectl create secret docker-registry docker-reg-credential \
           --docker-server=team0registory.azurecr.io \
           --docker-username=team0registory \
-          --docker-password="EkIl+iGZXqtxkO0HBiejYWLA/EusIuRU" \
+          --docker-password="wDbge0sXdCLUt3hxQ5mv7VBwNrw8J3/Z" \
           --docker-email=shigeru.sb.it@gmail.com
 
 secret/docker-reg-credential created
@@ -398,14 +515,63 @@ docker-reg-credential   kubernetes.io/dockerconfigjson        1      10m
 
 ```
 $ az redis create \
-      --name team0-redis \
-      --resource-group team0-resource-group \
-      --location japaneast \
-      --sku Standard \
-      --vm-size c1 \
-      --enable-non-ssl-port
+        --name team0-redis \
+        --resource-group team0-resource-group \
+        --location japaneast \
+        --sku Standard \
+        --vm-size c1 \
+        --enable-non-ssl-port
+{- Finished ..
+  "accessKeys": null,
+  "enableNonSslPort": true,
+  "hostName": "team0-redis.redis.cache.windows.net",
+  "id": "/subscriptions/1898747d-2160-4abf-ad79-70c094b0ccd1/resourceGroups/team0-resource-group/providers/Microsoft.Cache/Redis/team0-redis",
+  "instances": [
+    {
+      "isMaster": false,
+      "nonSslPort": 13000,
+      "shardId": null,
+      "sslPort": 15000,
+      "zone": null
+    },
+    {
+      "isMaster": false,
+      "nonSslPort": 13001,
+      "shardId": null,
+      "sslPort": 15001,
+      "zone": null
+    }
+  ],
+  "linkedServers": [],
+  "location": "Japan East",
+  "minimumTlsVersion": null,
+  "name": "team0-redis",
+  "port": 6379,
+  "provisioningState": "Creating",
+  "redisConfiguration": {
+    "maxclients": "1000",
+    "maxfragmentationmemory-reserved": "50",
+    "maxmemory-delta": "50",
+    "maxmemory-reserved": "50"
+  },
+  "redisVersion": "4.0.14",
+  "replicasPerMaster": null,
+  "resourceGroup": "team0-resource-group",
+  "shardCount": null,
+  "sku": {
+    "capacity": 1,
+    "family": "C",
+    "name": "Standard"
+  },
+  "sslPort": 6380,
+  "staticIp": null,
+  "subnetId": null,
+  "tags": {},
+  "tenantSettings": {},
+  "type": "Microsoft.Cache/Redis",
+  "zones": null
+}
 ```
-
 
 ## Azure SQL Database の作成
 
@@ -415,11 +581,29 @@ $ az redis create \
 
 ```
 $ az sql server create \
-      --name team0-sqlsrv \
-      --resource-group team0-resource-group \
-      --location japaneast \
-      --admin-user ServerAdmin \
-      --admin-password welcome1#
+        --name team0-sqlsrv \
+        --resource-group team0-resource-group \
+        --location japaneast \
+        --admin-user ServerAdmin \
+        --admin-password welcome1#
+{- Finished ..
+  "administratorLogin": "ServerAdmin",
+  "administratorLoginPassword": null,
+  "fullyQualifiedDomainName": "team0-sqlsrv.database.windows.net",
+  "id": "/subscriptions/1898747d-2160-4abf-ad79-70c094b0ccd1/resourceGroups/team0-resource-group/providers/Microsoft.Sql/servers/team0-sqlsrv",
+  "identity": null,
+  "kind": "v12.0",
+  "location": "japaneast",
+  "minimalTlsVersion": null,
+  "name": "team0-sqlsrv",
+  "privateEndpointConnections": [],
+  "publicNetworkAccess": "Enabled",
+  "resourceGroup": "team0-resource-group",
+  "state": "Ready",
+  "tags": null,
+  "type": "Microsoft.Sql/servers",
+  "version": "12.0"
+}
 ```
 
 ### SQL Server の作成
@@ -429,9 +613,112 @@ $ az sql server create \
 
 ```
 $ az sql db create \
-      --resource-group team0-resource-group \
-      --server team0-sqlsrv \
-      --name team0db \
-      --service-objective S2 \
-      --collation Japanese_XJIS_100_CI_AS
+        --resource-group team0-resource-group \
+        --server team0-sqlsrv \
+        --name team0db \
+        --service-objective S2 \
+        --collation Japanese_XJIS_100_CI_AS
+{- Finished ..
+  "autoPauseDelay": null,
+  "catalogCollation": "SQL_Latin1_General_CP1_CI_AS",
+  "collation": "Japanese_XJIS_100_CI_AS",
+  "createMode": null,
+  "creationDate": "2020-06-20T15:16:58.707000+00:00",
+  "currentServiceObjectiveName": "S2",
+  "currentSku": {
+    "capacity": 50,
+    "family": null,
+    "name": "Standard",
+    "size": null,
+    "tier": "Standard"
+  },
+  "databaseId": "b36046e0-058e-4ceb-9f06-5844948c5efa",
+  "defaultSecondaryLocation": "japanwest",
+  "earliestRestoreDate": "2020-06-20T15:46:58.707000+00:00",
+  "edition": "Standard",
+  "elasticPoolId": null,
+  "elasticPoolName": null,
+  "failoverGroupId": null,
+  "id": "/subscriptions/1898747d-2160-4abf-ad79-70c094b0ccd1/resourceGroups/team0-resource-group/providers/Microsoft.Sql/servers/team0-sqlsrv/databases/team0db",
+  "kind": "v12.0,user",
+  "licenseType": null,
+  "location": "japaneast",
+  "longTermRetentionBackupResourceId": null,
+  "managedBy": null,
+  "maxLogSizeBytes": null,
+  "maxSizeBytes": 268435456000,
+  "minCapacity": null,
+  "name": "team0db",
+  "pausedDate": null,
+  "readReplicaCount": 0,
+  "readScale": "Disabled",
+  "recoverableDatabaseId": null,
+  "recoveryServicesRecoveryPointId": null,
+  "requestedServiceObjectiveName": "S2",
+  "resourceGroup": "team0-resource-group",
+  "restorableDroppedDatabaseId": null,
+  "restorePointInTime": null,
+  "resumedDate": null,
+  "sampleName": null,
+  "sku": {
+    "capacity": 50,
+    "family": null,
+    "name": "Standard",
+    "size": null,
+    "tier": "Standard"
+  },
+  "sourceDatabaseDeletionDate": null,
+  "sourceDatabaseId": null,
+  "status": "Online",
+  "tags": null,
+  "type": "Microsoft.Sql/servers/databases",
+  "zoneRedundant": false
+}
 ```
+
+## Virtual Machine の作成
+
+### Virtual Machine 用のサブネットの作成
+
+```
+$ az network vnet subnet create \
+      --name vm-team0-vnet \
+      --resource-group team0-resource-group \
+      --vnet-name aks-team0-vnet \
+      --address-prefix 10.1.2.0/27
+{
+  "addressPrefix": "10.1.2.0/27",
+  "addressPrefixes": null,
+  "delegations": [],
+  "etag": "W/\"324b40a6-7183-426a-9675-cd050543f70a\"",
+  "id": "/subscriptions/1898747d-2160-4abf-ad79-70c094b0ccd1/resourceGroups/team0-resource-group/providers/Microsoft.Network/virtualNetworks/aks-team0-vnet/subnets/vm-team0-vnet",
+  "ipAllocations": null,
+  "ipConfigurationProfiles": null,
+  "ipConfigurations": null,
+  "name": "vm-team0-vnet",
+  "natGateway": null,
+  "networkSecurityGroup": null,
+  "privateEndpointNetworkPolicies": "Enabled",
+  "privateEndpoints": null,
+  "privateLinkServiceNetworkPolicies": "Enabled",
+  "provisioningState": "Succeeded",
+  "purpose": null,
+  "resourceGroup": "team0-resource-group",
+  "resourceNavigationLinks": null,
+  "routeTable": null,
+  "serviceAssociationLinks": null,
+  "serviceEndpointPolicies": null,
+  "serviceEndpoints": null,
+  "type": "Microsoft.Network/virtualNetworks/subnets"
+}
+```
+
+## Virtual Machine の作成
+
+- Virtual Machine を作成する
+- Virtual Machine のパスワードを有効にする
+- SQL Server のファイアウォールで AKS と VM のサブネットを追加する
+- Virtual Machine に Azure CLI、sqlcmd をインストールする
+
+https://docs.microsoft.com/ja-jp/cli/azure/install-azure-cli-apt?view=azure-cli-latest
+https://docs.microsoft.com/ja-jp/sql/linux/sql-server-linux-setup-tools?view=sql-server-ver15#ubuntu
