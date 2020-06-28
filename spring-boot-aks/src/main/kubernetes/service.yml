@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: aks-sample
+  name: aks-sample
+spec:
+  ports:
+    - port: 80
+      name: http
+      targetPort: 8080
+  selector:
+    app: aks-sample
+  sessionAffinity: None
+  type: LoadBalancer

@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aks-sample
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: aks-sample
+  minReadySeconds: 5
+  progressDeadlineSeconds: 90
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 0
+  template:
+    metadata:
+      labels:
+        app: aks-sample
+        version: v1
+    spec:
+      securityContext:
+        runAsUser: 1000
+      imagePullSecrets:
+        - name: docker-reg-credential
+      containers:
+        - name: aks-sample
+          image: team0registory.azurecr.io/aks-sample/spring-boot-sample:0.0.1
+          env:
+            - name: TZ
+              value: JST-9
+            - name: JAVA_TOOL_OPTIONS
+              value: "-XX:+UseContainerSupport -XX:InitialRAMPercentage=50 -XX:MinRAMPercentage=50 -XX:MaxRAMPercentage=50 -XX:MetaspaceSize=128m -XX:MaxMetaspaceSize=128m -XX:InitialCodeCacheSize=64m -XX:ReservedCodeCacheSize=64m -XX:CompressedClassSpaceSize=64m -XX:NewRatio=1 -XX:+UseParallelGC -XX:+UseParallelOldGC -Xlog:gc*=info::time,uptime,level,tags -XX:+ExitOnOutOfMemoryError -Djava.net.preferIPv4Stack=true -Djava.awt.headless=true -Djava.security.egd=file:/dev/./urandom"
+            - name: SPRING_PROFILES_ACTIVE
+              value: "pr"
+            - name: DATASOURCE_URL
+              value: "jdbc:sqlserver://team0-sqlsrv.database.windows.net:1433;database=pbldb"
+            - name: DATASOURCE_USER
+              value: "ServerAdmin"
+            - name: DATASOURCE_PASSWORD
+              value: "welcome1#"
+            - name: REDIS_HOST
+              value: "team0-redis.redis.cache.windows.net"
+            - name: REDIS_PORT
+              value: "6379"
+            - name: REDIS_PASSWORD
+              value: "21AZaO5N0hl92OMbU3M7ANpjrZyx6g9jKqfEpAmzmRk="
+          livenessProbe:
+            httpGet:
+              path: /spring-boot-aks/actuator/health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 5
+            timeoutSeconds: 15
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /spring-boot-aks/actuator/health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 5
+            timeoutSeconds: 15
+            successThreshold: 1
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: 1
+              memory: 2G
+            limits:
+              cpu: 1
+              memory: 2G

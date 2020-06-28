@@ -1,0 +1,17 @@
+---
+version: '2'
+
+services:
+  mssql:
+    image: "mcr.microsoft.com/mssql/server:2017-CU20-ubuntu-16.04"
+    container_name: mssql
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=welcome1#
+    ports:
+      - "1433:1433"
+#  redis:
+#    image: "redis:6.0.5"
+#    container_name: redis
+#    ports:
+#      - "6379:6379"
