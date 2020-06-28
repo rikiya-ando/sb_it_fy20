@@ -5,12 +5,19 @@
 以下のコマンドを実行し、適当な場所にサンプルのリポジトリをクローンします。
 
 ```
+$ git clone https://github.com/sb-it-shigeru/sb_it_fy20.git
+Cloning into 'sb_it_fy20'...
+remote: Enumerating objects: 73, done.
+remote: Counting objects: 100% (73/73), done.
+remote: Compressing objects: 100% (51/51), done.
+remote: Total 73 (delta 21), reused 27 (delta 4), pack-reused 0
+Unpacking objects: 100% (73/73), done.
 ```
 
-spring-boot-aks 下に移動し、以下のようになっていることを確認します。
+sb_it_fy20/spring-boot-aks 下に移動し、以下のようになっていることを確認します。
 
 ```
-$ cd spring-boot-aks/
+$ cd sb_it_fy20/spring-boot-aks/
 $ ls
 README.md  doc  mvnw  mvnw.cmd  pom.xml  spring-boot-aks.iml  src
 ```
