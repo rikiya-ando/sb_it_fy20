@@ -280,7 +280,7 @@ Successfully tagged team0registory.azurecr.io/aks-sample/spring-boot-sample:0.0.
 ```
 
 以下のコマンドを実行し、指定したリポジトリ、タグでコンテナが作成されていることを確認します。
-ここで、リポジトリ、タグが <none> のイメージは必要ないので削除しても問題ありません。
+ここで、リポジトリ、タグが `<none>` のイメージは必要ないので削除しても問題ありません。
 
 ```
 $ docker images
