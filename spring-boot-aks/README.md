@@ -197,7 +197,7 @@ jar ファイルを docker の下にコピーし、コンテナをビルドし�
 
 ```
 $ cp target/spring-boot-sample.jar src/main/docker/
-$ src/main/docker/
+$ cd src/main/docker/
 $ docker build --tag=team0registory.azurecr.io/aks-sample/spring-boot-sample:0.0.1 .
 Sending build context to Docker daemon  35.27MB
 Step 1/16 : FROM azul/zulu-openjdk-alpine:11.0.7 AS java-build
