@@ -18,6 +18,8 @@
   <properties>
     <java.version>11</java.version>
     <commons-lang3.version>3.10</commons-lang3.version>
+    <mssql-jdbc.version>8.2.2.jre11</mssql-jdbc.version>
+    <flyway.version>6.5.0</flyway.version>
   </properties>
 
   <dependencies>
@@ -78,7 +80,7 @@
       <groupId>com.microsoft.sqlserver</groupId>
       <artifactId>mssql-jdbc</artifactId>
       <scope>runtime</scope>
-      <version>8.2.2.jre11</version>
+      <version>${mssql-jdbc.version}</version>
     </dependency>
 
     <!-- ============================ -->
@@ -113,6 +115,23 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.flywaydb</groupId>
+        <artifactId>flyway-maven-plugin</artifactId>
+        <version>${flyway.version}</version>
+        <configuration>
+          <url><![CDATA[jdbc:sqlserver://localhost:1433]]></url>
+          <user>sa</user>
+          <password>welcome1#</password>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>com.microsoft.sqlserver</groupId>
+            <artifactId>mssql-jdbc</artifactId>
+            <version>${mssql-jdbc.version}</version>
+          </dependency>
+        </dependencies>
       </plugin>
     </plugins>
   </build>

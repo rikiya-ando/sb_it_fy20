@@ -37,6 +37,94 @@ a735077ab6c8        mcr.microsoft.com/mssql/server:2017-CU20-ubuntu-16.04   "/op
 
 MS SQL Server のコンテナが起動していることを確認します。初回実行時はコンテナがダウンロードされます。
 
+### flyway によるデータベース・マイグレーション
+
+まず、spring-boot-aks/src/main/resources/db/migration 下に、以下のような SQL ファイルが存在することを確認します。
+
+```
+$ cd spring-boot-aks/src/main/resources/db/migration/
+$ ls -l
+合計 8
+-rw-rw-r-- 1 tatsutas40 tatsutas40 155  7月  2 00:13 V1.0.0__create_table.sql
+-rw-rw-r-- 1 tatsutas40 tatsutas40 334  7月  2 00:15 V1.0.1__insert_master.sql
+```
+
+ここで、以下のサイトでも説明されているように、V<バージョン番号>__<ファイル名>.sql
+のようにファイル名のバージョン番号が非常に重要です。
+
+-「[【Java】シンプルなデータベースマイグレーションツール「flyway」を導入する](https://blog.honjala.net/entry/2016/03/07/015951)」
+
+pom.xml にて、118 行目以降の以下の設定を確認します。`<configuration>` 要素の子要素である、
+`<url>`、`<user>`、`<password>` を適切に JDBC の接続情報を設定する必要があります。
+サンプルではローカルの MS SQL Server のコンテナに設定されているので、このままで問題ありません。
+
+```
+<plugin>
+  <groupId>org.flywaydb</groupId>
+  <artifactId>flyway-maven-plugin</artifactId>
+  <version>${flyway.version}</version>
+  <configuration>
+    <url><![CDATA[jdbc:sqlserver://localhost:1433]]></url>
+    <user>sa</user>
+    <password>welcome1#</password>
+  </configuration>
+  <dependencies>
+    <dependency>
+      <groupId>com.microsoft.sqlserver</groupId>
+      <artifactId>mssql-jdbc</artifactId>
+      <version>${mssql-jdbc.version}</version>
+    </dependency>
+  </dependencies>
+</plugin>
+```
+
+pom.xml が存在するディレクトリにて、以下のように flyway:migrate を実行します。
+
+```
+$ mvn flyway:migrate
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ----------------< jp.co.softbank.fy20:spring-boot-aks >-----------------
+[INFO] Building spring-boot-aks 0.0.1-SNAPSHOT
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- flyway-maven-plugin:6.5.0:migrate (default-cli) @ spring-boot-aks ---
+[INFO] Flyway Community Edition 6.5.0 by Redgate
+[INFO] Database: jdbc:sqlserver://localhost:1433;useFmtOnly=false;useBulkCopyForBatchInsert=false;cancelQueryTimeout=-1;sslProtocol=TLS;jaasConfigurationName=SQLJDBCDriver;statementPoolingCacheSize=0;serverPreparedStatementDiscardThreshold=10;enablePrepareOnFirstPreparedStatementCall=false;fips=false;socketTimeout=0;authentication=NotSpecified;authenticationScheme=nativeAuthentication;xopenStates=false;sendTimeAsDatetime=true;trustStoreType=JKS;trustServerCertificate=false;TransparentNetworkIPResolution=true;serverNameAsACE=false;sendStringParametersAsUnicode=true;selectMethod=direct;responseBuffering=adaptive;queryTimeout=-1;packetSize=8000;multiSubnetFailover=false;loginTimeout=15;lockTimeout=-1;lastUpdateCount=true;encrypt=false;disableStatementPooling=true;columnEncryptionSetting=Disabled;applicationName=Microsoft JDBC Driver for SQL Server;applicationIntent=readwrite; (Microsoft SQL Server 14.0)
+[INFO] Successfully validated 2 migrations (execution time 00:00.052s)
+[INFO] Creating Schema History table [master].[dbo].[flyway_schema_history] ...
+[INFO] Current version of schema [dbo]: << Empty Schema >>
+[INFO] Migrating schema [dbo] to version 1.0.0 - create table
+[INFO] Migrating schema [dbo] to version 1.0.1 - insert master
+[INFO] Successfully applied 2 migrations to schema [dbo] (execution time 00:00.069s)
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  2.661 s
+[INFO] Finished at: 2020-07-02T00:36:26+09:00
+[INFO] ------------------------------------------------------------------------
+```
+
+sqlcmd 等で、SQL Database に接続して、データベースがマイグレーションされていることを確認します。
+
+```
+$ sqlcmd -S localhost -U sa -P welcome1#
+1> select * from employee;
+2> go
+id          last_name  first_name description
+----------- ---------- ---------- -----------
+          1 白戸         次郎         お父さん       
+          2 白戸         正子         お母さん       
+          3 吉田         彩          上戸 彩       
+
+(3 rows affected)
+1> exit
+```
+
+sqlcmd が未だインストールされていない場合は、以下を参考に mssql-tools をインストールします。
+
+-「[Linux に SQL Server コマンドライン ツール sqlcmd および bcp をインストールする](https://docs.microsoft.com/ja-jp/sql/linux/sql-server-linux-setup-tools?view=sql-server-ver15)」
+
 ### サンプルの起動
 
 spring-boot-aks 直下に移動して、以下のコマンドを実行してサンプル・アプリケーションを起動します。
