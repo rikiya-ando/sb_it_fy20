@@ -522,3 +522,42 @@ aks-sample-55586dff86-vmzwc   1/1     Running   0          55s
 ```
 
 EXTERNAL-IP で割り当てられている IP アドレスに対して、curl、あるいは Talend API Tester でアクセスしてみてください。
+
+### Azure SQL Database への Mac からの接続
+
+Azure SQL Database への接続は Azure 側に用意している踏み台 (jumpbox) の VM から sqlcmd で接続可能です。
+ここでは、Mac から直接、Azure SQL Database に接続する手順について説明します。
+
+Azure Portal にログインし、画面上の検索バーで「SQL」と入力し、検索を実行します。検索結果の「SQL Server」をクリックします。
+
+![SQL1](doc/sqlsrv1.png)
+
+SQL Server の一覧が表示されるので、自分のチームの SQL Server のリンクをクリックします。
+
+![SQL2](doc/sqlsrv2.png)
+
+左メニューの「セキュリティ」-「ファイアウォールと仮想ネットワーク」をクリックします。
+
+![SQL3](doc/sqlsrv3.png)
+
+![SQL4](doc/sqlsrv4.png)
+
+画面で、「クライアント IP の追加」をクリックします。
+
+![SQL5](doc/sqlsrv5.png)
+
+クライアント IP アドレスのセクションで、規則名 - 開始 IP - 終了 IP のレコードが追加されたことを確認して、画面上の「保存」ボタンをクリックします。
+
+![SQL6](doc/sqlsrv6.png)
+
+「サーバーのファイアウォール規則が正常に更新されました」と表示されれば、ファイアウォールの設定は完了です。
+
+![SQL7](doc/sqlsrv7.png)
+
+sqlcmd、あるいは Azure Data Studio から接続してください。PBL 用の Azure SQL Database には pbldb という名前で
+データベースを作成していますので、データベース名を指定します。
+
+```
+$ sqlcmd -S team0-sqlsrv.database.windows.net -U ServerAdmin -P welcome1# -d pbldb
+1>
+```
